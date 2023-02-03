@@ -1,57 +1,37 @@
-import axios from 'axios'
 import { useEffect } from 'react'
-import { Route, Routes } from 'react-router-dom'
 import './App.css'
-import Header from './components/home/shared/Header'
-import Cart from './pages/Cart'
+import { HashRouter, Routes, Route } from 'react-router-dom'
+import ProtectedRoutes from './components/ProtectedRoutes'
 import Home from './pages/Home'
-import LoginScreen from './pages/LoginScreen'
-import ProductId from './pages/ProductId'
-import ProtectedRout from './pages/ProtectedRout'
+import Login from './pages/Login'
 import Purchases from './pages/Purchases'
-import "./components/home/styles/cardProduct.css"
-import "./pages/styles/home.css"
-import "./components/home/productId/styles/productInfo.css"
-import "./components/home/productId/styles/slider.css"
-import "./components/home/productId/styles/similarProduct.css"
-import "./components/home/styles/inputSearch.css"
-import "./components/purchases/cardPurchase.css"
-import "./pages/styles/login.css"
-import "./pages/styles/cart.css"
-
+import ProductsId from './pages/ProductsId'
+import NavBar from './components/NavBar'
+import Loading from './components/Loading'
+import { useDispatch, useSelector } from 'react-redux'
+import { getProductsThunk } from './store/slices/products.slice'
 
 function App() {
+  const loading = useSelector(state => state.loading)
+  const dispatch = useDispatch();
 
-   useEffect(() => {
-     const URL = "https://e-commerce-api-v2.academlo.tech/api/v1/users"
-     const data = {
-       firstName: 'Franklin',
-       lastName: 'Rojas',
-       email: 'franklinjrm18@email.com',
-       password: '123456',
-       phone: '3102806291',
-       role: 'admin'
-     }
-       axios.post(URL, data)
-         .then(res => console.log(res.data))
-         .catch(err => console.log(err))
-   },[])
+  useEffect(() => {
+    dispatch(getProductsThunk())
+  }, [])
 
   return (
-    <div className="App">
-      <Header />
+    <HashRouter>
+      <NavBar />
+        {loading && <Loading />}
       <Routes>
-        <Route path='/' element={<Home />}/>
-        <Route path='/product/:id' element={<ProductId />}/>
-        <Route path='/login' element={<LoginScreen />} />
-
-        <Route  element={<ProtectedRout/>}> 
-          <Route path='/cart' element={<Cart />}/>
-          <Route path='/purchases' element={<Purchases />}/>
+        <Route path={"/"} element={<Home />} />
+        <Route path={"/login"} element={<Login />} />
+        <Route path={"/products/:id"} element={<ProductsId />} />
+        <Route element={<ProtectedRoutes />}>
+          <Route path={"/purchases"} element={<Purchases />} />
         </Route>
-
       </Routes>
-    </div>
+    </HashRouter>
   )
 }
 

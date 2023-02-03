@@ -1,47 +1,37 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import CardPurchase from '../components/purchases/CardPurchase'
-import getConfig from '../utils/getConfig'
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { getPurchasesThunk } from '../store/slices/purchases.slice';
 
 const Purchases = () => {
+    const purchases = useSelector(state => state.purchases)
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-  const [purchases, setPurchases] = useState()
+    useEffect(() => {
+        dispatch(getPurchasesThunk())
+    }, [])
 
-  useEffect(() => {
-    const URL = `https://e-commerce-api-v2.academlo.tech/api/v1/purchases`
-      axios.get(URL, getConfig())
-        .then(res => setPurchases(res.data.data.purchases))
-        .catch(err => console.log(err))
-  },[])
+    return (
+        <div>
+            <br /><br /><br />
+            <h1>Purchases</h1>
+            {purchases.map(product => (
+                    <div className='purchase_card' 
+                    key={product.createdAt}
+                    onClick={() => navigate(`/products/${product.product.id}`)}
+                    >
+                        <img src={product?.product.images[0].url} alt="" />
+                        <p>{product?.product.title}</p>
+                        <p>{product?.createdAt.slice(0, 10)}</p>
+                        <p>{product?.quantity}</p>
+                        <p>{product?.product.price}</p>
+                    </div>
+                ))
+            }
 
+        </div>
+    );
+};
 
-  const navigate = useNavigate()
-
-  const handleNavigate = () => {
-    navigate("/")
-  }
-
-  return (
-    <>
-    <div className='link_return_home'>
-    <a className='title_link_return_home' onClick={handleNavigate}>Home</a>
-    </div>
-    <div className='purchases'>
-      <h2 className='purchases__title'>My purchases</h2>
-      <div className='purchases__container'>
-        {
-          purchases?.map(purchase => (
-            <CardPurchase 
-            key = {purchase.id}
-            purchase ={purchase}
-            />
-          ))
-        }
-      </div>
-    </div>
-    </>
-  )
-}
-
-export default Purchases
+export default Purchases;
