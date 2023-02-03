@@ -1,34 +1,58 @@
-import { useState } from "react";
-import "./App.css";
-import { HashRouter, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-import Product from "./pages/ProductDetails";
-import Cart from "./pages/Cart";
-import Purchases from "./pages/Purchases";
-import Login from "./pages/Login";
-import Navbar from "./components/NavBar";
-import Loading from "./components/Loading";
-import { useSelector } from "react-redux";
-import ProtectedRoutes from "./components/ProtectedRoutes";
+import axios from 'axios'
+import { useEffect } from 'react'
+import { Route, Routes } from 'react-router-dom'
+import './App.css'
+import Header from './components/home/shared/Header'
+import Cart from './pages/Cart'
+import Home from './pages/Home'
+import LoginScreen from './pages/LoginScreen'
+import ProductId from './pages/ProductId'
+import ProtectedRout from './pages/ProtectedRout'
+import Purchases from './pages/Purchases'
+import "./components/home/styles/cardProduct.css"
+import "./pages/styles/home.css"
+import "./components/home/productId/styles/productInfo.css"
+import "./components/home/productId/styles/slider.css"
+import "./components/home/productId/styles/similarProduct.css"
+import "./components/home/styles/inputSearch.css"
+import "./components/purchases/cardPurchase.css"
+import "./pages/styles/login.css"
+import "./pages/styles/cart.css"
+
 
 function App() {
-  const isLoading = useSelector((state) => state.isLoading);
+
+  // useEffect(() => {
+  //   const URL = "https://ecommerce-api-react.herokuapp.com/api/v1/users"
+  //   const data = {
+  //     firstName: 'Walter',
+  //     lastName: 'Daza',
+  //     email: 'hardnekeyns@email.com',
+  //     password: '123456',
+  //     phone: '3102806291',
+  //     role: 'admin'
+  //   }
+  //     axios.post(URL, data)
+  //       .then(res => console.log(res.data))
+  //       .catch(err => console.log(err))
+  // },[])
 
   return (
-    <HashRouter>
-      <Navbar />
-      {isLoading && <Loading />}
+    <div className="App">
+      <Header />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route path='/' element={<Home />}/>
+        <Route path='/product/:id' element={<ProductId />}/>
+        <Route path='/login' element={<LoginScreen />} />
 
-        <Route path="/product/:id" element={<Product />} />
-        <Route element={<ProtectedRoutes />}>
-          <Route path="/Purchanses" element={<Purchases />} />
+        <Route  element={<ProtectedRout/>}> 
+          <Route path='/cart' element={<Cart />}/>
+          <Route path='/purchases' element={<Purchases />}/>
         </Route>
+
       </Routes>
-    </HashRouter>
-  );
+    </div>
+  )
 }
 
-export default App;
+export default App

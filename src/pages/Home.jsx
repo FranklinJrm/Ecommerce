@@ -1,74 +1,68 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  filterInputProductsThunk,
-  filterProductsThunk,
-  getProductThunk,
-} from "../store/slices/product.slice";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import Form from "react-bootstrap/Form";
-import InputSearchs from "../components/InputSearchs";
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllProducts } from '../store/slices/products.slice'
+import CardProduct from '../components/home/CardProduct'
+import InputSearch from '../components/home/InputSearch'
+import FilterCategory from '../components/home/FilterCategory'
+import FilterPrice from '../components/home/FilterPrice'
+import OrderByPrice from '../components/home/OrderByPrice'
 
 const Home = () => {
-  const dispatch = useDispatch();
-  const products = useSelector((state) => state.products);
-  const [categorys, setCategorys] = useState([]);
-  useEffect(() => {
-    dispatch(getProductThunk());
 
-    axios
-      .get("https://e-commerce-api-v2.academlo.tech/api/v1/products/categories")
-      .then((res) => setCategorys(res.data.data.categories));
-  }, []);
-  const filterProducts = (e) => {
-    dispatch(filterProductsThunk(e.target.value));
-  };
+  const [inputText, setInputText] = useState("")
+  const [filterByText, setFilterByText] = useState()
+  const [filterByPrice, setFilterByPrice] = useState({
+    from: 0,
+    to: Infinity
+  })
+
+  const products = useSelector(state => state.products)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getAllProducts())
+  }, [])
+
+  useEffect(() => {
+    if(inputText !== "" && products){
+      const cb = product => product.title.toLowerCase().includes(inputText.toLowerCase().trim())
+      setFilterByText(products.filter(cb))
+    }else{
+      setFilterByText(products)
+    } 
+  }, [inputText, products])
+
+  // console.log(products)
+
+  // filtro por precio
+
+  const callbackFilterPrice = product => {
+    return +product.price >= filterByPrice.from && +product.price <= filterByPrice.to 
+  }
 
   return (
-    <div className="home">
-      <div className="filter">
-        <select name="" id="" onChange={filterProducts} className='select'>
-          <option value={getProductThunk}>All</option>
-
-        {categorys.map((category) => (
-          <option value={category.id}>{category.name}</option>
-          ))}
-          </select>
-          <i className="arrow"><img src="./image/arrow-down.svg" style={{width:'rem'}}></img></i>
-      </div>
-      <div className="products_container">
-        <InputSearchs />
-
-        <div className="products_cards_container">
-          {products?.map((product, index) => (
-            <div className="products_card" key={products.id}>
-              <div className="product" >
-                <Link to={`/product/${product.id}`}>
-                  <div className="img_product">
-                    <img src={product.productImgs[0]} alt="product" />
-                  </div>
-                  <div className="info">
-                    <h3>{product.title}</h3>
-                  <div className="price">
-
-                    <span>price</span>
-                    <h4>
-                    {product.price}
-                    </h4>
-                  </div>
-                  </div>
-                </Link>
-                <button className="btn_cart">
-                  <img src="./image/bxs-cart.svg" alt="" />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+    <main className="home">
+    <InputSearch 
+    setInputText = {setInputText}
+    inputText={inputText}
+    />
+    <FilterPrice 
+    setFilterByPrice = {setFilterByPrice}
+    />
+    <FilterCategory />
+    <OrderByPrice />
+    <div className='home__containter'>
+        {
+            filterByText?.filter(callbackFilterPrice).map(product => (
+              <CardProduct 
+              key={product.id}
+              product={product}
+              />
+            ))
+        }
     </div>
-  );
-};
+</main>
+  )
+}
 
-export default Home;
+export default Home

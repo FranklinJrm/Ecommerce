@@ -1,0 +1,18 @@
+.input_container{
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+    /* border: 1px solid black; */
+}
+.input{
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #aaa8;
+    background-color: rgba(173, 173, 173, 0.219);
+    width: 400px;
+    padding: 10px;
+}
+.input::placeholder{
+    color: rgb(170, 170, 170);
+}
