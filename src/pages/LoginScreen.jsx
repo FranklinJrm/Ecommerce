@@ -9,7 +9,7 @@ const LoginScreen = () => {
     const [isLogged, setisLogged] = useState(false)
 
     const submit = data => {
-        const URL ="https://ecommerce-api-react.herokuapp.com/api/v1/users/login"
+        const URL ="https://e-commerce-api-v2.academlo.tech/api/v1/users/login"
         axios.post(URL, data)
             .then(res => {
                 console.log(res.data)

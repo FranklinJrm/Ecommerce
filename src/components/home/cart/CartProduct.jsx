@@ -9,7 +9,7 @@ const CartProduct = ({product}) => {
     const dispatch = useDispatch()
 
     const handleDelete = () => {
-        const URL = `https://ecommerce-api-react.herokuapp.com/api/v1/cart/${product.id}`    
+        const URL = `https://e-commerce-api-v2.academlo.tech/api/v1/cart/${product.id}`    
         axios.delete(URL, getConfig())
             .then(res => {
                 console.log(res.data)

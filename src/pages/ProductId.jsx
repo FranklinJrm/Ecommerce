@@ -12,7 +12,7 @@ const ProductId = () => {
   const {id} = useParams()
   
   useEffect(() => {
-    const URL = `https://ecommerce-api-react.herokuapp.com/api/v1/products/${id}`
+    const URL = `https://e-commerce-api-v2.academlo.tech/api/v1/products/${id}`
     axios.get(URL)
     .then(res => setProduct(res.data.data.product))
     .catch(err => console.log(err))
