@@ -22,20 +22,20 @@ import "./pages/styles/cart.css"
 
 function App() {
 
-  // useEffect(() => {
-  //   const URL = "https://ecommerce-api-react.herokuapp.com/api/v1/users"
-  //   const data = {
-  //     firstName: 'Walter',
-  //     lastName: 'Daza',
-  //     email: 'hardnekeyns@email.com',
-  //     password: '123456',
-  //     phone: '3102806291',
-  //     role: 'admin'
-  //   }
-  //     axios.post(URL, data)
-  //       .then(res => console.log(res.data))
-  //       .catch(err => console.log(err))
-  // },[])
+   useEffect(() => {
+     const URL = "https://e-commerce-api-v2.academlo.tech/api/v1/users"
+     const data = {
+       firstName: 'Franklin',
+       lastName: 'Rojas',
+       email: 'franklinjrm18@email.com',
+       password: '123456',
+       phone: '3102806291',
+       role: 'admin'
+     }
+       axios.post(URL, data)
+         .then(res => console.log(res.data))
+         .catch(err => console.log(err))
+   },[])
 
   return (
     <div className="App">

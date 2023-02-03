@@ -10,7 +10,7 @@ const FilterCategory = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        const URL = "https://ecommerce-api-react.herokuapp.com/api/v1/products/categories"
+        const URL = "https://e-commerce-api-v2.academlo.tech/api/v1/products/categories"
             axios.get(URL)
                 .then(res => setCategories(res.data.data.categories))
                 .catch(err => console.log(err))

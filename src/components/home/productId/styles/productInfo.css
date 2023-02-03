@@ -74,13 +74,10 @@
     transition: filter 100ms ease;
 }
 
-/*contenedor padre y return*/
-
 .productinfo_slice_container{
     display: flex;
     flex-wrap: wrap;
     max-width: 1200px;
-    /* border: 1px solid black; */
     justify-content: center;
 }
 .link_return_home{
